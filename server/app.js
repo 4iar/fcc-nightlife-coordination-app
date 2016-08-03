@@ -45,6 +45,29 @@ app.get('/api/nightlife', (request, response) => {
     })
 });
 
+app.post('/api/venue/:id/attend', (request, response) => {
+  const id = request.params.id;
+  db.collection('venues').update({id}, {$inc: {numAttending: +1}}, {upsert: true}, (error, result) => {
+    if (error) {
+      response.json({status: "error", message: "problem updating the database"})
+    } else if (result) {
+      response.json({status: "success", message: null});
+    }
+  })
+})
+
+app.post('/api/venue/:id/unattend', (request, response) => {
+  const id = request.params.id;
+  db.collection('venues').update({id}, {$inc: {numAttending: -1}}, (error, result) => {
+    if (error) {
+      response.json({status: "error", message: "problem updating the database"})
+    } else if (result) {
+      response.json({status: "success", message: null});
+    }
+  })
+})
+
+
 MongoClient.connect(mongolabUri, (err, database) => {
   if (err) return console.log(err)
   db = database
