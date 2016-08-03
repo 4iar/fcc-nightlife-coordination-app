@@ -33,7 +33,8 @@ app.get('/api/nightlife', (request, response) => {
   if (!request.query.lat || !request.query.lon) {
     response.json({status: "error", message: "coordinates not provided"});
   }
-  
+
+  // TODO: get the numbers of people attending
   const lat = request.query.lat;
   const lon = request.query.lon;
   yelp.search({term: 'nightlife', ll: lat + ',' + lon})
