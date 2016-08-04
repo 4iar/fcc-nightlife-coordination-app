@@ -1,7 +1,7 @@
 const initialState = {
   venues: {
     placeholder: 'aasldkjflakj',
-    location: {lat: 0, lon: 0}
+    location: {lat: null, lon: null}
   },
   user: {
     id: 30412341

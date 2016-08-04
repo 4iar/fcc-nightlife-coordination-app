@@ -1,15 +1,18 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
-import showLogin from '../utils/showLogin';
+import { connect } from 'react-redux';
+
+import {promptLogin} from '../actions/userActions';
 
 
+@connect(null, {promptLogin})
 export default class NavBar extends React.Component {
   render() {
     return (
       <AppBar
         title="Nightlife Coordinator"
-        iconElementRight={<FlatButton onClick={showLogin} label="Login" />}
+        iconElementRight={<FlatButton onClick={this.props.promptLogin.bind(this)} label="Login" />}
       />
     );
   }

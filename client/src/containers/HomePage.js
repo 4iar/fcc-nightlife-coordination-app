@@ -16,7 +16,7 @@ function getState(state) {
 export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       venues: []
     };
@@ -32,7 +32,7 @@ export default class HomePage extends React.Component {
     return (
       <div>
         <NavBar />
-        <LocationSearch />
+        <LocationSearch query={this.props.location.query} />
         {this.state.venues.map((v) => {
           return (
             <Venue key={v.id} venue={v}/>

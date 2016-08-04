@@ -42,14 +42,17 @@ app.get('/', (request, response) => {
 });
 
 // Auth0 callback handler
-app.get('/callback',
-  passport.authenticate('auth0', { failureRedirect: '/url-if-something-fails' }),
-  function(req, res) {
-    if (!req.user) {
-      throw new Error('user null');
-    }
-    res.redirect("/user");
-  });
+app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/broke' }), (request, response) => {
+  console.log(request.query);
+  if (!request.user) {
+    throw new Error('user null');
+  }
+  
+  if (request.query.lat && request.query.lon) {
+    response.redirect('/home/?lat=' + request.query.lat + '&=' + request.query.lon);
+  }
+  response.redirect("/home");
+});
 
 app.get('/api/nightlife', (request, response) => {
   if (!request.query.lat || !request.query.lon) {
