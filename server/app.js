@@ -51,8 +51,9 @@ app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/broke' 
   
   if (request.query.lat && request.query.lon) {
     response.redirect('/home/?lat=' + request.query.lat + '&=' + request.query.lon);
+  } else {
+    response.redirect("/home");
   }
-  response.redirect("/home");
 });
 
 app.get('/api/nightlife', (request, response) => {
