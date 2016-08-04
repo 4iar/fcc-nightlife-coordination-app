@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Venue from '../components/Venue';
 import LocationSearch from '../components/LocationSearch';
+import NavBar from '../components/NavBar';
 
 
 function getState(state) {
@@ -30,6 +31,7 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <div>
+        <NavBar />
         <LocationSearch />
         {this.state.venues.map((v) => {
           return (
