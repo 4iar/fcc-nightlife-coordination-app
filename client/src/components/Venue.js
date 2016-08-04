@@ -11,17 +11,19 @@ import '../styles/venue.scss';
 export default class Venue extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props.venue);
     this.state = {
-      name: 'nice bar',
-      description: 'as dlk jasldkj alks dlaks dlaksd lkj alk lkasdlk jaslkd lka ksaldkajsdl k alsdkjl akjsdlkjas dlkjsald',
-      thumbnailUrl: 'https://s3-media3.fl.yelpcdn.com/bphoto/5if54pPcQzBvPKy55fddDw/ms.jpg',
-      headerUrl: 'https://s3-media3.fl.yelpcdn.com/bphoto/5if54pPcQzBvPKy55fddDw/o.jpg',
-      numGoing: 0,
-      distance: 50.4,
-      phone: 491029348182,
-      userGoing: false,
+      name: this.props.venue.name,
+      description: this.props.venue.name,
+      thumbnailUrl: this.props.venue.thumbnailUrl,
+      headerUrl: this.props.venue.headerUrl,
+      numGoing: this.props.venue.numGoing,
+      distance: this.props.venue.distance,
+      phone: this.props.venue.phone,
+      userGoing: this.props.venue.userGoing,
     }
   }
+  
 
   render() {
     return (

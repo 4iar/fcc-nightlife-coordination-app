@@ -1,27 +1,41 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Venue from '../components/Venue';
 import LocationSearch from '../components/LocationSearch';
 
 
+function getState(state) {
+  return {
+    venues: state.app.venues
+  };
+}
 
+@connect(getState)
 export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
+    
+    this.state = {
+      venues: []
+    };
   }
 
-  componentDidMount() {
-    // get data
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      venues: newProps.venues
+    });
   }
 
   render() {
     return (
       <div>
         <LocationSearch />
-        <Venue />
-        <Venue />
-        <Venue />
-        <Venue />
+        {this.state.venues.map((v) => {
+          return (
+            <Venue venue={v}/>
+          )
+        })}
       </div>
     );
   }
