@@ -38,10 +38,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/', (request, response) => {
-  response.json({hello: 'world'});
-});
-
 // Auth0 callback handler
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/broke' }), (request, response) => {
   console.log(request.query);
