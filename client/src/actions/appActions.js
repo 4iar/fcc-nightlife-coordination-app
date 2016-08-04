@@ -3,15 +3,30 @@ import {API_VENUES_ENDPOINT, API_BASE_URL} from '../constants/endpoints';
 import _ from 'lodash';
 
 export function fetchVenues(location) {
-  return function (dispatch) {
-    dispatch(requestVenues(location));
-
+  return function (dispatch, getState) {
+    
+    dispatch(requestVenues());
+    
+    if (!location) {
+      location = getState().app.location
+    }
+    dispatch(newLocation(location));
+    
     const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon;
     axios.get(endpoint)
       .then((response) => {
         dispatch(receiveVenues(response.data.venues))
       })
   }
+}
+
+export function newLocation(location) {
+  return {
+    type: 'NEW_LOCATION',
+    payload: {
+      location
+    }
+  };
 }
 
 export function requestVenues() {
@@ -49,7 +64,7 @@ export function attendVenue(id) {
     axios.post(endpoint, {})
       .then((response) => {
         dispatch(receiveAttendVenue(response.data))
-        dispatch(fetchVenues);
+        dispatch(fetchVenues());
       })
   }
 }

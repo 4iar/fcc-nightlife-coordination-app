@@ -17,6 +17,12 @@ export default function app(state = initialState.app, action) {
         loading: true
       };
     }
+    case 'NEW_LOCATION': {
+      return {
+        ...state,
+        location: action.payload.location
+      }
+    }
     default:
       return state;
   }
