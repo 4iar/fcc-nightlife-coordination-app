@@ -33,7 +33,7 @@ export default class HomePage extends React.Component {
         <LocationSearch />
         {this.state.venues.map((v) => {
           return (
-            <Venue venue={v}/>
+            <Venue key={v.id} venue={v}/>
           )
         })}
       </div>
