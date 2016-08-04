@@ -25,6 +25,7 @@ const mongolabUri = process.env.MONGODB_URI;
 let db;
 
 const app = express();
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json({ extended: true }))
 app.use(cookieParser());
 // See express session docs for information on the options: https://github.com/expressjs/session
@@ -135,6 +136,10 @@ app.post('/api/venue/:id/:action/:user', (request, response) => {
     }
   })
 })
+
+app.get('*', function (req, res) {
+  res.sendFile(__dirname + '/index.html');
+});
 
 MongoClient.connect(mongolabUri, (err, database) => {
   if (err) return console.log(err)
