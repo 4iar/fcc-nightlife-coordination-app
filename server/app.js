@@ -60,12 +60,22 @@ app.get('/api/nightlife', (request, response) => {
     })
 });
 
-app.post('/api/venue/:id/attend/:user', (request, response) => {
+app.post('/api/venue/:id/:action/:user', (request, response) => {
   const id = request.params.id;
   const user = request.params.user
   
+  let attending
+  if (request.params.action === 'attend') {
+    attending = true;
+  } else if (request.params.action === 'unattend') {
+    attending = false;
+  } else {
+    response.json({status: "error", message: "invalid venue action"});
+    return;
+  }
+  
   let userRef = {};
-  userRef['attending.' + user] = true;
+  userRef['attending.' + user] = attending;
   
   db.collection('venues').update({id}, {$set: userRef}, {upsert: true}, (error, result) => {
     if (error) {
@@ -75,18 +85,6 @@ app.post('/api/venue/:id/attend/:user', (request, response) => {
     }
   })
 })
-
-app.post('/api/venue/:id/unattend', (request, response) => {
-  const id = request.params.id;
-  db.collection('venues').update({id}, {$inc: {numAttending: -1}}, (error, result) => {
-    if (error) {
-      response.json({status: "error", message: "problem updating the database"})
-    } else if (result) {
-      response.json({status: "success", message: null});
-    }
-  })
-})
-
 
 MongoClient.connect(mongolabUri, (err, database) => {
   if (err) return console.log(err)
