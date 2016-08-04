@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {API_VENUES_ENDPOINT} from '../constants/endpoints';
+import {API_VENUES_ENDPOINT, API_BASE_URL} from '../constants/endpoints';
 
 export function fetchVenues(location) {
   return function (dispatch) {
@@ -8,8 +8,7 @@ export function fetchVenues(location) {
     const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon;
     axios.get(endpoint)
       .then((response) => {
-        console.log(response);
-        dispatch(receiveVenues(response.data.data.businesses))  // need to modify this for new api
+        dispatch(receiveVenues(response.data.venues))
       })
   }
 }
@@ -20,25 +19,37 @@ export function requestVenues() {
   };
 }
 
-export function receiveVenues(venuesRaw) {
-  const venues = venuesRaw.map((v) => {
-    return {
-      name: v.name,
-      phone: v.display_phone,
-      description: v.snippet_text,
-      thumbnailUrl: v.snippet_image_url,
-      headerUrl: v.snippet_image_url,  // need to get the large url
-      numGoing: -1,
-      distance: Math.floor(v.distance),
-      userGoing: false
-    }
-  })
-
-
+export function receiveVenues(venues) {
   return {
     type: 'RECEIVE_VENUES',
     payload: {
       venues
     }
   };
+}
+
+export function attendVenue(id) {
+  return function (dispatch, getState) {
+    dispatch(requestAttendVenue());
+    const userId = getState().app.user.id;
+    const endpoint = API_BASE_URL + '/api/venue/' + id + '/attend/' + userId;
+    
+    axios.post(endpoint, {})
+      .then((response) => {
+        dispatch(receiveAttendVenue(response.data))
+        dispatch(fetchVenues);
+      })
+  }
+}
+
+export function requestAttendVenue() {
+  return {
+    type: 'REQUEST_ATTEND_VENUE'
+  };
+}
+
+export function receiveAttendVenue() {
+  return {
+    type: 'RECEIVE_ATTEND_VENUE'
+  }
 }

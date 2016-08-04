@@ -39,16 +39,35 @@ app.get('/api/nightlife', (request, response) => {
   const lon = request.query.lon;
   yelp.search({term: 'nightlife', ll: lat + ',' + lon})
     .then((data) => {
-      response.json({status: "success", message: "", data});
+      const venues = data.businesses.map((v) => {
+        return {
+          name: v.name,
+          id: v.id,
+          phone: v.display_phone,
+          description: v.snippet_text,
+          thumbnailUrl: v.snippet_image_url,
+          headerUrl: v.snippet_image_url,  // need to get the large url
+          numGoing: -1,  // query db for this
+          distance: Math.floor(v.distance),
+          userGoing: false
+        };
+      })
+
+      response.json({status: "success", message: "", venues});
     })
     .catch(() => {
       response.json({status: "error", message: "error contacting the yelp api"});
     })
 });
 
-app.post('/api/venue/:id/attend', (request, response) => {
+app.post('/api/venue/:id/attend/:user', (request, response) => {
   const id = request.params.id;
-  db.collection('venues').update({id}, {$inc: {numAttending: +1}}, {upsert: true}, (error, result) => {
+  const user = request.params.user
+  
+  let userRef = {};
+  userRef['attending.' + user] = true;
+  
+  db.collection('venues').update({id}, {$set: userRef}, {upsert: true}, (error, result) => {
     if (error) {
       response.json({status: "error", message: "problem updating the database"})
     } else if (result) {

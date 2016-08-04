@@ -4,10 +4,14 @@ import {cyan700} from 'material-ui/styles/colors';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/maps/directions-run';
+import {connect} from 'react-redux';
+
+import {attendVenue} from '../actions/appActions';
 
 import '../styles/venue.scss';
 
 
+@connect(null, {attendVenue})
 export default class Venue extends React.Component {
   constructor(props) {
     super(props);
@@ -21,9 +25,13 @@ export default class Venue extends React.Component {
       distance: this.props.venue.distance,
       phone: this.props.venue.phone,
       userGoing: this.props.venue.userGoing,
+      id: this.props.venue.id
     }
   }
   
+  handleClick() {
+    this.props.attendVenue(this.state.id)
+  }
 
   render() {
     return (
@@ -53,7 +61,7 @@ export default class Venue extends React.Component {
               secondary={true}
               badgeStyle={{top: 12, right: 12}}
             >
-              <IconButton tooltip="Attend">
+              <IconButton onClick={this.handleClick.bind(this)} tooltip="Attend">
                 <NotificationsIcon color={this.state.userGoing ? cyan700 : null} secondary={true}/>
               </IconButton>
             </Badge>

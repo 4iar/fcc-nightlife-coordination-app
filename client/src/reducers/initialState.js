@@ -1,6 +1,9 @@
 const initialState = {
   app: {
-    placeholder: 'aasldkjflakj'
+    placeholder: 'aasldkjflakj',
+    user: {
+      id: 30412341
+    }
   }
 }
 
