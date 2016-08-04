@@ -4,6 +4,12 @@ const mongodb = require('mongodb');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
 const Yelp = require('yelp');
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const strategy = require('./setup-passport');
+
+
 
 var yelp = new Yelp({
   consumer_key: process.env.YELP_CONSUMER_KEY,
@@ -20,6 +26,11 @@ let db;
 
 const app = express();
 app.use(bodyParser.json({ extended: true }))
+app.use(cookieParser());
+// See express session docs for information on the options: https://github.com/expressjs/session
+app.use(session({ secret: process.env.AUTH0_CLIENT_SECRET, resave: false,  saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -29,6 +40,16 @@ app.use(function(req, res, next) {
 app.get('/', (request, response) => {
   response.json({hello: 'world'});
 });
+
+// Auth0 callback handler
+app.get('/callback',
+  passport.authenticate('auth0', { failureRedirect: '/url-if-something-fails' }),
+  function(req, res) {
+    if (!req.user) {
+      throw new Error('user null');
+    }
+    res.redirect("/user");
+  });
 
 app.get('/api/nightlife', (request, response) => {
   if (!request.query.lat || !request.query.lon) {
