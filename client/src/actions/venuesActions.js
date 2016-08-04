@@ -1,17 +1,18 @@
 import axios from 'axios';
 import {API_VENUES_ENDPOINT, API_BASE_URL} from '../constants/endpoints';
+import {promptLogin} from './userActions';
 import _ from 'lodash';
 
 export function fetchVenues(location) {
   return function (dispatch, getState) {
-    
+
     dispatch(requestVenues());
-    
+
     if (!location) {
       location = getState().venues.location
     }
     dispatch(newLocation(location));
-    
+
     const userId = getState().user.id;
     const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon + '&user=' + userId;
     axios.get(endpoint)
@@ -64,8 +65,12 @@ export function attendVenue(id) {
 
     axios.post(endpoint, {})
       .then((response) => {
-        dispatch(receiveAttendVenue(response.data))
-        dispatch(fetchVenues());
+        if (response.data.status === 'error' && response.data.message === 'not logged in') {
+          dispatch(promptLogin());
+        } else if (response.data.status === 'success') {
+          dispatch(receiveAttendVenue(response.data))
+          dispatch(fetchVenues());
+        }
       })
   }
 }

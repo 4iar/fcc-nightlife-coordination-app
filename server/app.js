@@ -109,9 +109,14 @@ app.get('/api/nightlife', (request, response) => {
 });
 
 app.post('/api/venue/:id/:action/:user', (request, response) => {
+  if (!request.isAuthenticated()) {
+    response.json({status: 'error', message: 'not logged in'});
+    return;
+  }
+  
   const id = request.params.id;
   const user = request.params.user
-  
+
   let attending
   if (request.params.action === 'attend') {
     attending = true;
