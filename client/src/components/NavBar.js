@@ -1,6 +1,7 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
+import showLogin from '../utils/showLogin';
 
 
 export default class NavBar extends React.Component {
@@ -8,7 +9,7 @@ export default class NavBar extends React.Component {
     return (
       <AppBar
         title="Nightlife Coordinator"
-        iconElementRight={<FlatButton label="Login" />}
+        iconElementRight={<FlatButton onClick={showLogin} label="Login" />}
       />
     );
   }
