@@ -8,11 +8,11 @@ export function fetchVenues(location) {
     dispatch(requestVenues());
     
     if (!location) {
-      location = getState().app.location
+      location = getState().venues.location
     }
     dispatch(newLocation(location));
     
-    const userId = getState().app.user.id;
+    const userId = getState().user.id;
     const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon + '&user=' + userId;
     axios.get(endpoint)
       .then((response) => {
@@ -50,8 +50,8 @@ export function attendVenue(id) {
   return function (dispatch, getState) {
     dispatch(requestAttendVenue());
     const state = getState()
-    const userId = state.app.user.id;
-    const venues = state.app.venues;
+    const userId = state.user.id;
+    const venues = state.venues.venues;
 
     let action = '';
     if (_.keyBy(venues, 'id')[id].userGoing) {

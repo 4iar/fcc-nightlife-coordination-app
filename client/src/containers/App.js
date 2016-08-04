@@ -5,7 +5,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { connect } from 'react-redux';
-import {fetchVenues} from '../actions/appActions';
+import {fetchVenues} from '../actions/venuesActions';
 
 injectTapEventPlugin();
 

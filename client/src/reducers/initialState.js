@@ -1,10 +1,10 @@
 const initialState = {
-  app: {
+  venues: {
     placeholder: 'aasldkjflakj',
-    location: {lat: 0, lon: 0},
-    user: {
-      id: 30412341
-    }
+    location: {lat: 0, lon: 0}
+  },
+  user: {
+    id: 30412341
   }
 }
 

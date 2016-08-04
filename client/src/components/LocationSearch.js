@@ -3,7 +3,7 @@ import Geosuggest from 'react-geosuggest';
 import {connect} from 'react-redux';
 import 'react-geosuggest/module/geosuggest.css';
 
-import {fetchVenues} from '../actions/appActions';
+import {fetchVenues} from '../actions/venuesActions';
 
 
 @connect(null, {fetchVenues})

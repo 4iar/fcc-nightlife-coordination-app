@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import app from './appReducer';
+import venues from './venuesReducer';
+import user from './userReducer';
 import {routerReducer} from 'react-router-redux';
 
 
 const rootReducer = combineReducers({
-  app,
+  user,
+  venues,
   routing: routerReducer,
 });
 

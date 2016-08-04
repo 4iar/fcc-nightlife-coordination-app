@@ -1,6 +1,6 @@
 import initialState from './initialState';
 
-export default function app(state = initialState.app, action) {
+export default function venues(state = initialState.venues, action) {
   switch (action.type) {
     case 'RECEIVE_VENUES': {
       console.log("got venues");

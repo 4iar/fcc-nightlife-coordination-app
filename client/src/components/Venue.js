@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/maps/directions-run';
 import {connect} from 'react-redux';
 
-import {attendVenue} from '../actions/appActions';
+import {attendVenue} from '../actions/venuesActions';
 
 import '../styles/venue.scss';
 

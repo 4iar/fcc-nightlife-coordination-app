@@ -8,7 +8,7 @@ import NavBar from '../components/NavBar';
 
 function getState(state) {
   return {
-    venues: state.app.venues
+    venues: state.venues.venues
   };
 }
 
