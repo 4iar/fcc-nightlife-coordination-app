@@ -1,9 +1,8 @@
 import React from 'react';
-import Geosuggest from 'react-geosuggest';
 
 import Venue from '../components/Venue';
+import LocationSearch from '../components/LocationSearch';
 
-import 'react-geosuggest/module/geosuggest.css';
 
 
 export default class HomePage extends React.Component {
@@ -18,7 +17,7 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <Geosuggest />
+        <LocationSearch />
         <Venue />
         <Venue />
         <Venue />
