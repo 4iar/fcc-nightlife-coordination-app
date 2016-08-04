@@ -2,6 +2,7 @@
 const express = require('express');
 const mongodb = require('mongodb');
 const bodyParser = require('body-parser');
+const _ = require('lodash');
 const Yelp = require('yelp');
 
 var yelp = new Yelp({
@@ -37,26 +38,45 @@ app.get('/api/nightlife', (request, response) => {
   // TODO: get the numbers of people attending
   const lat = request.query.lat;
   const lon = request.query.lon;
+  let venues = [];
   yelp.search({term: 'nightlife', ll: lat + ',' + lon})
     .then((data) => {
-      const venues = data.businesses.map((v) => {
-        return {
+      const venuesRaw = data.businesses;
+      venuesRaw.forEach((v) => {
+        venues.push({
           name: v.name,
           id: v.id,
           phone: v.display_phone,
           description: v.snippet_text,
           thumbnailUrl: v.snippet_image_url,
           headerUrl: v.snippet_image_url,  // need to get the large url
-          numGoing: -1,  // query db for this
+          numGoing: 0,  // query db for this
           distance: Math.floor(v.distance),
           userGoing: false
-        };
+        });
       })
-
-      response.json({status: "success", message: "", venues});
+      
+      // TODO: refactor this spaghetti code -- can simplify by converting to obj and back to array at end
+      const venueIds = _.map(venues, 'id');
+      db.collection('venues').find({id: {$in: venueIds}}).toArray((error, data) => {
+        if (error) {
+          response.json({status: "error", message: ""});
+        } else if (data) {
+          data.forEach((venue) => {
+            const numGoing = _.values(venue.attending).reduce((prev, curr) => {
+              return prev + curr;
+            }, 0)
+            const i = venues.map(function(e) { return e.id; }).indexOf(venue.id);
+            console.log(venues[i].numGoing);
+            venues[i].numGoing = numGoing;
+            console.log(venues[i].numGoing);
+          })
+          response.json({status: "success", message: "", venues});
+        }
+      })
     })
-    .catch(() => {
-      response.json({status: "error", message: "error contacting the yelp api"});
+    .catch((err) => {
+      response.json({status: "error", message: "error contacting the yelp api", error});
     })
 });
 
