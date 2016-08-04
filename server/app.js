@@ -38,6 +38,7 @@ app.get('/api/nightlife', (request, response) => {
   // TODO: get the numbers of people attending
   const lat = request.query.lat;
   const lon = request.query.lon;
+  const userId = request.query.user ? request.query.user : null// placeholder for user auth id
   let venues = [];
   yelp.search({term: 'nightlife', ll: lat + ',' + lon})
     .then((data) => {
@@ -66,10 +67,15 @@ app.get('/api/nightlife', (request, response) => {
             const numGoing = _.values(venue.attending).reduce((prev, curr) => {
               return prev + curr;
             }, 0)
+            
             const i = venues.map(function(e) { return e.id; }).indexOf(venue.id);
-            console.log(venues[i].numGoing);
             venues[i].numGoing = numGoing;
-            console.log(venues[i].numGoing);
+
+           if (userId) {
+             const userGoing = venue.attending[userId];
+             console.log("venue: "  + venue.id + "curr user: " + userId + " venue user id: " + _.keys(venue.attending) + 'user is going: ' + userGoing);
+             venues[i].userGoing = userGoing;
+           }
           })
           response.json({status: "success", message: "", venues});
         }

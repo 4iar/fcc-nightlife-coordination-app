@@ -12,7 +12,8 @@ export function fetchVenues(location) {
     }
     dispatch(newLocation(location));
     
-    const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon;
+    const userId = getState().app.user.id;
+    const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon + '&user=' + userId;
     axios.get(endpoint)
       .then((response) => {
         dispatch(receiveVenues(response.data.venues))
