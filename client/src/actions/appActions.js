@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {API_VENUES_ENDPOINT, API_BASE_URL} from '../constants/endpoints';
+import _ from 'lodash';
 
 export function fetchVenues(location) {
   return function (dispatch) {
@@ -28,12 +29,23 @@ export function receiveVenues(venues) {
   };
 }
 
+// TODO: name is deceptive since it actually toggles venue attendance
 export function attendVenue(id) {
   return function (dispatch, getState) {
     dispatch(requestAttendVenue());
-    const userId = getState().app.user.id;
-    const endpoint = API_BASE_URL + '/api/venue/' + id + '/attend/' + userId;
-    
+    const state = getState()
+    const userId = state.app.user.id;
+    const venues = state.app.venues;
+
+    let action = '';
+    if (_.keyBy(venues, 'id')[id].userGoing) {
+      action = 'unattend';
+    } else {
+      action = 'attend';
+    }
+
+    const endpoint = API_BASE_URL + '/api/venue/' + id + '/' + action + '/' + userId;
+
     axios.post(endpoint, {})
       .then((response) => {
         dispatch(receiveAttendVenue(response.data))
