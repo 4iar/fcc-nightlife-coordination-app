@@ -15,18 +15,25 @@ import '../styles/venue.scss';
 export default class Venue extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.venue);
-    this.state = {
-      name: this.props.venue.name,
-      description: this.props.venue.name,
-      thumbnailUrl: this.props.venue.thumbnailUrl,
-      headerUrl: this.props.venue.headerUrl,
-      numGoing: this.props.venue.numGoing,
-      distance: this.props.venue.distance,
-      phone: this.props.venue.phone,
-      userGoing: this.props.venue.userGoing,
-      id: this.props.venue.id
+    this.state = this.getVenueObj(this.props.venue);
+  }
+  
+  getVenueObj(venue) {
+    return {
+      name: venue.name,
+      description: venue.name,
+      thumbnailUrl: venue.thumbnailUrl,
+      headerUrl: venue.headerUrl,
+      numGoing: venue.numGoing,
+      distance: venue.distance,
+      phone: venue.phone,
+      userGoing: venue.userGoing,
+      id: venue.id
     }
+  }
+  
+  componentWillReceiveProps(newProps) {
+    this.setState(this.getVenueObj(newProps.venue))
   }
   
   handleClick() {
