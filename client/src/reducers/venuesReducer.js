@@ -7,7 +7,8 @@ export default function venues(state = initialState.venues, action) {
       console.log(action.payload.venues);
       return {
         ...state,
-        venues: action.payload.venues
+        venues: action.payload.venues,
+        loading: false,
       };
     }
     case 'REQUEST_VENUES': {
