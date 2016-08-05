@@ -9,16 +9,16 @@ export function fetchVenues(location) {
     dispatch(requestVenues());
 
     if (!location) {
-      location = getState().venues.location
+      location = getState().venues.location;
     }
     dispatch(newLocation(location));
 
     const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon;
     axios.get(endpoint)
       .then((response) => {
-        dispatch(receiveVenues(response.data.venues))
-      })
-  }
+        dispatch(receiveVenues(response.data.venues));
+      });
+  };
 }
 
 export function newLocation(location) {
@@ -49,7 +49,7 @@ export function receiveVenues(venues) {
 export function attendVenue(id) {
   return function (dispatch, getState) {
     dispatch(requestAttendVenue());
-    const state = getState()
+    const state = getState();
     const venues = state.venues.venues;
 
     let action = '';
@@ -66,11 +66,11 @@ export function attendVenue(id) {
         if (response.data.status === 'error' && response.data.message === 'not logged in') {
           dispatch(promptLogin());
         } else if (response.data.status === 'success') {
-          dispatch(receiveAttendVenue(response.data))
+          dispatch(receiveAttendVenue(response.data));
           dispatch(fetchVenues());
         }
-      })
-  }
+      });
+  };
 }
 
 export function requestAttendVenue() {
@@ -82,5 +82,5 @@ export function requestAttendVenue() {
 export function receiveAttendVenue() {
   return {
     type: 'RECEIVE_ATTEND_VENUE'
-  }
+  };
 }

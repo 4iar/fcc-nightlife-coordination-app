@@ -34,7 +34,6 @@ export default class HomePage extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <NavBar />
@@ -53,7 +52,7 @@ export default class HomePage extends React.Component {
         this.state.venues.map((v) => {
           return (
             <Venue key={v.id} venue={v}/>
-          )
+          );
         })}
       </div>
     );

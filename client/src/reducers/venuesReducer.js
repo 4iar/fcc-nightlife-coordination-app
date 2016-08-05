@@ -3,8 +3,6 @@ import initialState from './initialState';
 export default function venues(state = initialState.venues, action) {
   switch (action.type) {
     case 'RECEIVE_VENUES': {
-      console.log("got venues");
-      console.log(action.payload.venues);
       return {
         ...state,
         venues: action.payload.venues,
@@ -12,7 +10,6 @@ export default function venues(state = initialState.venues, action) {
       };
     }
     case 'REQUEST_VENUES': {
-      console.log("request sent");
       return {
         ...state,
         loading: true
@@ -22,7 +19,7 @@ export default function venues(state = initialState.venues, action) {
       return {
         ...state,
         location: action.payload.location
-      }
+      };
     }
     default:
       return state;

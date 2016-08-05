@@ -7,6 +7,6 @@ const initialState = {
   user: {
     id: 30412341
   }
-}
+};
 
 export default initialState;

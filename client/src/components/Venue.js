@@ -18,6 +18,10 @@ export default class Venue extends React.Component {
     this.state = this.getVenueObj(this.props.venue);
   }
   
+  componentWillReceiveProps(newProps) {
+    this.setState(this.getVenueObj(newProps.venue));
+  }
+  
   getVenueObj(venue) {
     return {
       name: venue.name,
@@ -29,15 +33,11 @@ export default class Venue extends React.Component {
       phone: venue.phone,
       userGoing: venue.userGoing,
       id: venue.id
-    }
-  }
-  
-  componentWillReceiveProps(newProps) {
-    this.setState(this.getVenueObj(newProps.venue))
+    };
   }
   
   handleClick() {
-    this.props.attendVenue(this.state.id)
+    this.props.attendVenue(this.state.id);
   }
 
   render() {
