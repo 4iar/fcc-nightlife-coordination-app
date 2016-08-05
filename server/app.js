@@ -60,7 +60,7 @@ app.get('/api/nightlife', (request, response) => {
   // TODO: get the numbers of people attending
   const lat = request.query.lat;
   const lon = request.query.lon;
-  const userId = request.query.user ? request.query.user : null// placeholder for user auth id
+  const userId = request.user ? request.user.id : null// placeholder for user auth id
   let venues = [];
   yelp.search({term: 'nightlife', ll: lat + ',' + lon})
     .then((data) => {
@@ -115,7 +115,7 @@ app.post('/api/venue/:id/:action/:user', (request, response) => {
   }
   
   const id = request.params.id;
-  const user = request.params.user
+  const user = request.user.id;
 
   let attending
   if (request.params.action === 'attend') {
