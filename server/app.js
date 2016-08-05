@@ -108,7 +108,7 @@ app.get('/api/nightlife', (request, response) => {
     })
 });
 
-app.post('/api/venue/:id/:action/:user', (request, response) => {
+app.post('/api/venue/:id/:action', (request, response) => {
   if (!request.isAuthenticated()) {
     response.json({status: 'error', message: 'not logged in'});
     return;

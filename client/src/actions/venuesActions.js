@@ -13,8 +13,7 @@ export function fetchVenues(location) {
     }
     dispatch(newLocation(location));
 
-    const userId = getState().user.id;
-    const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon + '&user=' + userId;
+    const endpoint = API_VENUES_ENDPOINT + '?lat=' + location.lat + '&lon=' + location.lon;
     axios.get(endpoint)
       .then((response) => {
         dispatch(receiveVenues(response.data.venues))
@@ -51,7 +50,6 @@ export function attendVenue(id) {
   return function (dispatch, getState) {
     dispatch(requestAttendVenue());
     const state = getState()
-    const userId = state.user.id;
     const venues = state.venues.venues;
 
     let action = '';
@@ -61,7 +59,7 @@ export function attendVenue(id) {
       action = 'attend';
     }
 
-    const endpoint = API_BASE_URL + '/api/venue/' + id + '/' + action + '/' + userId;
+    const endpoint = API_BASE_URL + '/api/venue/' + id + '/' + action;
 
     axios.post(endpoint, {})
       .then((response) => {
