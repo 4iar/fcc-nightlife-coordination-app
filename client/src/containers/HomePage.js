@@ -18,7 +18,7 @@ export default class HomePage extends React.Component {
     super(props);
 
     this.state = {
-      venues: []
+      venues: null
     };
   }
 
@@ -33,7 +33,12 @@ export default class HomePage extends React.Component {
       <div>
         <NavBar />
         <LocationSearch query={this.props.location.query} />
-        {this.state.venues.map((v) => {
+        {this.state.venues && this.state.venues.length === 0 &&
+        <h2 style={{textAlign: 'center'}}>Nothing going on here :(</h2>
+        }
+
+        {this.state.venues !== null && this.state.venues.length > 0 &&
+        this.state.venues.map((v) => {
           return (
             <Venue key={v.id} venue={v}/>
           )
