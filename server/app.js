@@ -65,19 +65,19 @@ app.get('/api/nightlife', (request, response) => {
   yelp.search({term: 'nightlife', ll: lat + ',' + lon})
     .then((data) => {
       const venuesRaw = data.businesses;
-      console.log(venuesRaw[0])
       venuesRaw.forEach((v) => {
+        console.log(v)
         venues.push({
           name: v.name,
           id: v.id,
           phone: v.display_phone,
           description: v.snippet_text,
           thumbnailUrl: v.snippet_image_url,
-          headerUrl: v.image_url.split('/').slice(0,5).concat('o.jpg').join('/'),
+          headerUrl: v.image_url ? v.image_url.split('/').slice(0,5).concat('o.jpg').join('/') : null,
           numGoing: 0,  // query db for this
           distance: Math.floor(v.distance),
           userGoing: false
-        });
+        })
       })
       
       // TODO: refactor this spaghetti code -- can simplify by converting to obj and back to array at end
