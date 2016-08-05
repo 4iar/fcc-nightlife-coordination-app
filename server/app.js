@@ -65,6 +65,7 @@ app.get('/api/nightlife', (request, response) => {
   yelp.search({term: 'nightlife', ll: lat + ',' + lon})
     .then((data) => {
       const venuesRaw = data.businesses;
+      console.log(venuesRaw[0])
       venuesRaw.forEach((v) => {
         venues.push({
           name: v.name,
@@ -72,7 +73,7 @@ app.get('/api/nightlife', (request, response) => {
           phone: v.display_phone,
           description: v.snippet_text,
           thumbnailUrl: v.snippet_image_url,
-          headerUrl: v.snippet_image_url,  // need to get the large url
+          headerUrl: v.image_url.split('/').slice(0,5).concat('o.jpg').join('/'),
           numGoing: 0,  // query db for this
           distance: Math.floor(v.distance),
           userGoing: false

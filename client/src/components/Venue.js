@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardActions, CardText, CardTitle} from 'material-ui/Card';
+import {Card, CardActions, CardText, CardMedia, CardTitle} from 'material-ui/Card';
 import {cyan700} from 'material-ui/styles/colors';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
@@ -21,7 +21,7 @@ export default class Venue extends React.Component {
   getVenueObj(venue) {
     return {
       name: venue.name,
-      description: venue.name,
+      description: venue.description,
       thumbnailUrl: venue.thumbnailUrl,
       headerUrl: venue.headerUrl,
       numGoing: venue.numGoing,
@@ -44,6 +44,10 @@ export default class Venue extends React.Component {
     return (
       <Card className="venue">
 
+        <CardMedia className="image" size={30} >
+          <img src={this.state.headerUrl} />
+        </CardMedia>
+        
         <CardTitle className="title">
           <div>{this.state.name}</div>
         </CardTitle>
